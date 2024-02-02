@@ -1,6 +1,6 @@
 #######################################################################################################################################################################################################################
 # Main-Engine-Control-System
-VIEW AS RAW FILE
+CLICK README, ONLY VIEW AS RAW FILE ON TOP LEFT
 By: Christopher Andersen
 
 This project is the culmination of my efforts to re-create the original Tacho System developed by MAN B&W for ME main engines with my own input.
