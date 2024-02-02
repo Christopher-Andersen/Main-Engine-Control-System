@@ -1,6 +1,6 @@
-```#######################################################################################################################################################################################################################
+#######################################################################################################################################################################################################################
 # Main-Engine-Control-System
-CLICK README, CLICK RAW, TO BE READ AS RAW FILE ONLY
+CLICK README.md, CLICK RAW, TO BE READ AS RAW FILE ONLY
 By: Christopher Andersen
 
 This project is the culmination of my efforts to re-create the original Tacho System developed by MAN B&W for ME main engines with my own input.
@@ -239,4 +239,4 @@ Circuit diagram modeled here: https://www.multisim.com/content/Kr2qwFthUyTpyucij
 
 The diodes represent the output states and serve as a visual representation of what is happening on the flywheel. These diodes are then hardwired to a fuel injector for a cylinder, hypothetically, because the cylinder assignment per state is not known. As an example, the firing order of this engine is 1-5-3-4-2-6. Relating the firing order to the state of the cylinder in the diesel cycle (which is unknown, this coompletely hypothetical), we can say while the flywheel is within 0-44 degrees (S0), cylinder 1 is injecting fuel into the cylinder, cylinder 6 has just combusted its fuel and is on the start of its power stroke, cylinder 2 is halfway through its power stroke with the exhaust valves starting to open, cylinder 4 is at bottom dead center with its scavenge air valves open, cylinder 3 is halfway through its compression stroke, closing its exhaust valves, and cylinder 5 is finishing its compression stroke, awaiting fuel injection.
 
-#######################################################################################################################################################################################################################```
+#######################################################################################################################################################################################################################
