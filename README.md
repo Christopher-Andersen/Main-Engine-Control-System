@@ -1,4 +1,4 @@
-#######################################################################################################################################################################################################################
+```#######################################################################################################################################################################################################################
 # Main-Engine-Control-System
 CLICK README, CLICK RAW, TO BE READ AS RAW FILE ONLY
 By: Christopher Andersen
@@ -29,7 +29,7 @@ The three inputs to my system are a forward/reverse input from the engine order 
 
 
            Current state      | Input |                 Next state              |              Output
-State    Q2_cur Q1_cur Q0_cur |  F R  | Q2_nxt J2 K2 Q1_nxt J1 K1 Q0_nxt J0 K0  |  CW CCW S0 S1 S2 S3 S4 S5 S6 S7
+Pos.     Q2_cur Q1_cur Q0_cur |  F R  | Q2_nxt J2 K2 Q1_nxt J1 K1 Q0_nxt J0 K0  |  CW CCW S0 S1 S2 S3 S4 S5 S6 S7
 ------------------------------|-------|-----------------------------------------|--------------------------------
 0-44        0      0     0    |  0 0  |    0    0  x    0    0  x    0    0  x  |   0  0   1  0  0  0  0  0  0  0	
             0      0     0    |  0 1  |    1    1  x    1    1  x    1    1  x  |   0  1   0  0  0  0  0  0  0  1
@@ -239,4 +239,4 @@ Circuit diagram modeled here: https://www.multisim.com/content/Kr2qwFthUyTpyucij
 
 The diodes represent the output states and serve as a visual representation of what is happening on the flywheel. These diodes are then hardwired to a fuel injector for a cylinder, hypothetically, because the cylinder assignment per state is not known. As an example, the firing order of this engine is 1-5-3-4-2-6. Relating the firing order to the state of the cylinder in the diesel cycle (which is unknown, this coompletely hypothetical), we can say while the flywheel is within 0-44 degrees (S0), cylinder 1 is injecting fuel into the cylinder, cylinder 6 has just combusted its fuel and is on the start of its power stroke, cylinder 2 is halfway through its power stroke with the exhaust valves starting to open, cylinder 4 is at bottom dead center with its scavenge air valves open, cylinder 3 is halfway through its compression stroke, closing its exhaust valves, and cylinder 5 is finishing its compression stroke, awaiting fuel injection.
 
-#######################################################################################################################################################################################################################
+#######################################################################################################################################################################################################################```
