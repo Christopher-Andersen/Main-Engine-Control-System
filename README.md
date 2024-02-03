@@ -71,7 +71,9 @@ Pos.     Q2_cur Q1_cur Q0_cur |  F R  | Q2_nxt J2 K2 Q1_nxt J1 K1 Q0_nxt J0 K0  
             1      1     1    |  1 0  |    0    x  1    0    x  1    0    x  1  |   1  0   1  0  0  0  0  0  0  0
             1      1     1    |  1 1  |    x    x  x    x    x  x    x    x  x  |   x  x   x  x  x  x  x  x  x  x
 ```
+State diagram:
 
+![Image Alt text](/images/State-diagram.pdf "State Diagram")
 
 Karnaugh maps derived from the truth table in sum of products form:
 
