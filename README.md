@@ -12,13 +12,13 @@ The absence of a camshaft in this instance is what interests me about this confi
 The hydraulic oil pumped through the FIVA valves by the hydraulic power supply uses a 6 micrometer autofilter with a backflush initiated every 30-120 minutes. The hydraulic oil uses the same oil as the main engine lube oil supply pumped with 3 axis piston pumps with swashplates. The average pressure in the hydraulic system while under load is 210-300 Bar. There is a 4th pump in this engine setup, but this pump is a fixed displacement pump only designed to run at 85% capacity for emergency purposes only. The pumps are designed to share load when a pump reaches above 90% load. If one pump reaches this load amount, a second pump will turn on, splitting the load until both of these pumps reach 90%, and then another one turns on until it reaches the fixed displacement pump.
 
 The Tacho System is a measurement system for engine speed and crankshaft position for the control of events in the main engine. This system is an electrohydraulic replacement for the camshaft that utilizes 8 sensors across 2 systems that measure degrees on a 360 tooth gear. To find the position of the gear and therefore the position and timing of the cylinders, the 4 sensors Marker Master A (MMA), Marker Slave A (MSA), Quadratur 1A (Q1A), Quadratur 2A (Q2A), Marker Master B (MMB), Marker Slave B (MSB), Quadratur 1B (Q1B), and Quadratur 2B (Q2B) determine the position and timing of the cylinder using this truth table:
-
+```
 Pos	0-44	  45-89	  90-134    135-179      180-224    225-269    270-314	    315-359
 MMA	 1	    1	     1	    1	      0	      0	      0	       0
 MMB	 0	    1	     1	    1	      1	      0	      0	       0
 MSA	 0	    0	     1	    1	      1	      1	      0	       0
 MSB	 0	    0	     0	    1	      1	      1	      1	       0
-
+```
 For my replication of this system, I take advantage of the 8 divisions of the flywheel to create a finite state machine with 8 states (3 bits). For this construction I use JK flip flops in my state memory portion instead of D flip flops due to the simplification of the output logic. I also believe that if there were to be more states required for an engine with more cylinders, JK flip flops would be necessary.
 
 Side note: I believe it is possible to make this system modular for engines with a variable amount of cylinders. Currently there are 8 states with a 45 degree resolution but as the resolution goes up due to the precision of the finite state machine increasing, the amount of states needs to increase too.
