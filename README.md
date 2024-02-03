@@ -12,11 +12,11 @@ The hydraulic oil pumped through the FIVA valves by the hydraulic power supply u
 
 The Tacho System is a measurement system for engine speed and crankshaft position for the control of events in the main engine. This system is an electrohydraulic replacement for the camshaft that utilizes 8 sensors across 2 systems that measure degrees on a 360 tooth gear. To find the position of the gear and therefore the position and timing of the cylinders, the 4 sensors Marker Master A (MMA), Marker Slave A (MSA), Quadratur 1A (Q1A), Quadratur 2A (Q2A), Marker Master B (MMB), Marker Slave B (MSB), Quadratur 1B (Q1B), and Quadratur 2B (Q2B) determine the position and timing of the cylinder using this truth table:
 ```
-Pos	0-44         45-89       90-134    135-179      180-224    225-269    270-314     315-359
-MMA	 1             1           1         1            0          0          0           0
-MMB	 0             1           1         1            1          0          0           0
-MSA	 0             0           1         1            1          1          0           0
-MSB	 0             0           0         1            1          1          1           0
+Pos   0-44   45-89   90-134   135-179   180-224   225-269   270-314   315-359
+MMA    1       1       1         1         0         0         0         0
+MMB    0       1       1         1         1         0         0         0
+MSA    0       0       1         1         1         1         0         0
+MSB    0       0       0         1         1         1         1         0
 ```
 For my replication of this system, I take advantage of the 8 divisions of the flywheel to create a finite state machine with 8 states (3 bits). For this construction I use JK flip flops in my state memory portion instead of D flip flops due to the simplification of the output logic. I also believe that if there were to be more states required for an engine with more cylinders, JK flip flops would be necessary.
 
