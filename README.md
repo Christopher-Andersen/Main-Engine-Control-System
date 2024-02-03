@@ -1,6 +1,5 @@
 #######################################################################################################################################################################################################################
 # Main-Engine-Control-System
-CLICK README.md, CLICK RAW, TO BE READ AS RAW FILE ONLY
 By: Christopher Andersen
 
 This project is the culmination of my efforts to re-create the original Tacho System developed by MAN B&W for ME main engines with my own input.
@@ -13,11 +12,11 @@ The hydraulic oil pumped through the FIVA valves by the hydraulic power supply u
 
 The Tacho System is a measurement system for engine speed and crankshaft position for the control of events in the main engine. This system is an electrohydraulic replacement for the camshaft that utilizes 8 sensors across 2 systems that measure degrees on a 360 tooth gear. To find the position of the gear and therefore the position and timing of the cylinders, the 4 sensors Marker Master A (MMA), Marker Slave A (MSA), Quadratur 1A (Q1A), Quadratur 2A (Q2A), Marker Master B (MMB), Marker Slave B (MSB), Quadratur 1B (Q1B), and Quadratur 2B (Q2B) determine the position and timing of the cylinder using this truth table:
 ```
-Pos	0-44	  45-89	  90-134    135-179      180-224    225-269    270-314	    315-359
-MMA	 1	    1	     1	    1	      0	      0	      0	       0
-MMB	 0	    1	     1	    1	      1	      0	      0	       0
-MSA	 0	    0	     1	    1	      1	      1	      0	       0
-MSB	 0	    0	     0	    1	      1	      1	      1	       0
+Pos	0-44	  45-89	  90-134    135-179      180-224    225-269    270-314     315-359
+MMA	 1             1           1         1            0          0          0           0
+MMB	 0             1           1         1            1          0          0           0
+MSA	 0             0           1         1            1          1          0           0
+MSB	 0             0           0         1            1          1          1           0
 ```
 For my replication of this system, I take advantage of the 8 divisions of the flywheel to create a finite state machine with 8 states (3 bits). For this construction I use JK flip flops in my state memory portion instead of D flip flops due to the simplification of the output logic. I also believe that if there were to be more states required for an engine with more cylinders, JK flip flops would be necessary.
 
@@ -27,7 +26,7 @@ When designing this system, there are 2 schools of thought: either build a senso
 
 The three inputs to my system are a forward/reverse input from the engine order telegraph and the engine speed defined as clock speed. The outputs are the state (or position) that the flywheel is in, and the direction of spin of the propeller. Below is the truth table for this system along with the state diagram:
 
-
+```
            Current state      | Input |                 Next state              |              Output
 Pos.     Q2_cur Q1_cur Q0_cur |  F R  | Q2_nxt J2 K2 Q1_nxt J1 K1 Q0_nxt J0 K0  |  CW CCW S0 S1 S2 S3 S4 S5 S6 S7
 ------------------------------|-------|-----------------------------------------|--------------------------------
@@ -70,13 +69,13 @@ Pos.     Q2_cur Q1_cur Q0_cur |  F R  | Q2_nxt J2 K2 Q1_nxt J1 K1 Q0_nxt J0 K0  
             1      1     1    |  0 1  |    1    x  0    1    x  0    0    x  1  |   0  1   0  0  0  0  0  0  1  0
             1      1     1    |  1 0  |    0    x  1    0    x  1    0    x  1  |   1  0   1  0  0  0  0  0  0  0
             1      1     1    |  1 1  |    x    x  x    x    x  x    x    x  x  |   x  x   x  x  x  x  x  x  x  x
-
+```
 
 
 Karnaugh maps derived from the truth table in sum of products form:
 
 J2:
-
+```
   \   000   001   011   010   110   111   101   100
    \ _______________________________________________
  00 |  0  |  0  |  0  |  0  |  x  |  x  |  x  |  x  |
@@ -84,11 +83,11 @@ J2:
  11 |  x  |  x  |  x  |  x  |  x  |  x  |  x  |  x  |
  10 |  0  |  0  |  1  |  0  |  x  |  x  |  x  |  x  |
      ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅
-
+```
 J2 = !Q1_cur * !Q0_cur * R + Q1_cur * Q0_cur * F
 
 K2:
-
+```
   \   000   001   011   010   110   111   101   100
    \ _______________________________________________
  00 |  x  |  x  |  x  |  x  |  0  |  0  |  0  |  0  |
@@ -96,10 +95,11 @@ K2:
  11 |  x  |  x  |  x  |  x  |  x  |  x  |  x  |  x  |
  10 |  x  |  x  |  x  |  x  |  0  |  1  |  0  |  0  |
      ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅
+```
 K2 = !Q1_cur * !Q0_cur * R + Q1_cur * Q0_cur * F
 
 J1:
-
+```
   \   000   001   011   010   110   111   101   100
    \ _______________________________________________
  00 |  0  |  0  |  x  |  x  |  x  |  x  |  0  |  0  |
@@ -107,10 +107,11 @@ J1:
  11 |  x  |  x  |  x  |  x  |  x  |  x  |  x  |  x  |
  10 |  0  |  1  |  x  |  x  |  x  |  x  |  1  |  0  |
      ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅
+```
 J1 = !Q0_cur * R + Q0_cur * F
 
 K1:
-
+```
   \   000   001   011   010   110   111   101   100
    \ _______________________________________________
  00 |  x  |  x  |  0  |  0  |  0  |  0  |  x  |  x  |
@@ -118,10 +119,11 @@ K1:
  11 |  x  |  x  |  x  |  x  |  x  |  x  |  x  |  x  |
  10 |  x  |  x  |  1  |  0  |  0  |  1  |  x  |  x  |
      ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅
+```
 K1 = !Q0_cur * R + Q0_cur * F
 
 J0:
-
+```
   \   000   001   011   010   110   111   101   100
    \ _______________________________________________
  00 |  0  |  x  |  x  |  0  |  0  |  x  |  x  |  0  |
@@ -129,10 +131,11 @@ J0:
  11 |  x  |  x  |  x  |  x  |  x  |  x  |  x  |  x  |
  10 |  1  |  x  |  x  |  1  |  1  |  x  |  x  |  1  |
      ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅
+```
 J0 = F + R
 
 K0:
-
+```
   \   000   001   011   010   110   111   101   100
    \ _______________________________________________
  00 |  x  |  0  |  0  |  x  |  x  |  0  |  0  |  x  |
@@ -140,10 +143,11 @@ K0:
  11 |  x  |  x  |  x  |  x  |  x  |  x  |  x  |  x  |
  10 |  x  |  1  |  1  |  x  |  x  |  1  |  1  |  x  |
      ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅
+```
 K0 = F + R
 
 S0:
-
+```
   \   000   001   011   010   110   111   101   100
    \ _______________________________________________
  00 |  1  |  0  |  0  |  0  |  0  |  0  |  0  |  0  |
@@ -151,10 +155,11 @@ S0:
  11 |  x  |  x  |  x  |  x  |  x  |  x  |  x  |  x  |
  10 |  0  |  0  |  0  |  0  |  0  |  1  |  0  |  0  |
      ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅
+```
 S0 = !Q2_cur * !Q1_cur * !Q0_cur * !F * !R + !Q2_cur * !Q1_cur * Q0_cur * R + Q2_cur * Q1_cur * Q0_cur * F
 
 S1:
-
+```
   \   000   001   011   010   110   111   101   100
    \ _______________________________________________
  00 |  0  |  1  |  0  |  0  |  0  |  0  |  0  |  0  |
@@ -162,10 +167,11 @@ S1:
  11 |  x  |  x  |  x  |  x  |  x  |  x  |  x  |  x  |
  10 |  1  |  0  |  0  |  0  |  0  |  0  |  0  |  0  |
      ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅
+```
 S1 = !Q2_cur * !Q1_cur * Q0_cur * !F * !R + !Q2_cur * Q1_cur * !Q0_cur * R + !Q2_cur * !Q1_cur * !Q0_cur * F
 
 S2:
-
+```
   \   000   001   011   010   110   111   101   100
    \ _______________________________________________
  00 |  0  |  0  |  0  |  1  |  0  |  0  |  0  |  0  |
@@ -173,11 +179,12 @@ S2:
  11 |  x  |  x  |  x  |  x  |  x  |  x  |  x  |  x  |
  10 |  0  |  1  |  0  |  0  |  0  |  0  |  0  |  0  |
      ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅
+```
 S2 = !Q2_cur * Q1_cur * !Q0_cur * !F * !R + !Q2_cur * Q1_cur * Q0_cur * R + !Q2_cur * !Q1_cur * Q0_cur * F
 
      
 S3:
-
+```
   \   000   001   011   010   110   111   101   100
    \ _______________________________________________
  00 |  0  |  0  |  1  |  0  |  0  |  0  |  0  |  0  |
@@ -185,10 +192,11 @@ S3:
  11 |  x  |  x  |  x  |  x  |  x  |  x  |  x  |  x  |
  10 |  0  |  0  |  0  |  1  |  0  |  0  |  0  |  0  |
      ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅
+```
 S3 = !Q2_cur * Q1_cur * Q0_cur * !F * !R + Q2_cur * !Q1_cur * !Q0_cur * R + !Q2_cur * Q1_cur * !Q0_cur * F
      
 S4:
-
+```
   \   000   001   011   010   110   111   101   100
    \ _______________________________________________
  00 |  0  |  0  |  0  |  0  |  0  |  0  |  0  |  1  |
@@ -196,11 +204,11 @@ S4:
  11 |  x  |  x  |  x  |  x  |  x  |  x  |  x  |  x  |
  10 |  0  |  0  |  1  |  0  |  0  |  0  |  0  |  0  |
      ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅
-     
+```
 S4 = Q2_cur * !Q1_cur * !Q0_cur * !F * !R + Q2_cur * !Q1_cur * Q0_cur * R + !Q2_cur * Q1_cur * Q0_cur * F
      
 S5:
-
+```
   \   000   001   011   010   110   111   101   100
    \ _______________________________________________
  00 |  0  |  0  |  0  |  0  |  0  |  0  |  1  |  0  |
@@ -208,11 +216,11 @@ S5:
  11 |  x  |  x  |  x  |  x  |  x  |  x  |  x  |  x  |
  10 |  0  |  0  |  0  |  0  |  0  |  0  |  0  |  1  |
      ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅
-
+```
 S5 = Q2_cur * !Q1_cur * Q0_cur * !F * !R + Q2_cur * Q1_cur * !Q0_cur * R + Q2_cur * !Q1_cur * !Q0_cur * F     
 
 S6:
-
+```
   \   000   001   011   010   110   111   101   100
    \ _______________________________________________
  00 |  0  |  0  |  0  |  0  |  1  |  0  |  0  |  0  |
@@ -220,11 +228,11 @@ S6:
  11 |  x  |  x  |  x  |  x  |  x  |  x  |  x  |  x  |
  10 |  0  |  0  |  0  |  0  |  0  |  0  |  1  |  0  |
      ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅
-
+```
 S6 = Q2_cur * Q1_cur * !Q0_cur * !F * !R + Q2_cur * Q1_cur * Q0_cur * R + Q2_cur * !Q1_cur * Q0_cur * F
 
 S7:
-
+```
   \   000   001   011   010   110   111   101   100
    \ _______________________________________________
  00 |  0  |  0  |  0  |  0  |  0  |  1  |  0  |  0  |
@@ -232,7 +240,7 @@ S7:
  11 |  x  |  x  |  x  |  x  |  x  |  x  |  x  |  x  |
  10 |  0  |  0  |  0  |  0  |  1  |  0  |  0  |  0  |
      ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅ ̅
-
+```
 S7 = Q2_cur * Q1_cur * Q0_cur * !F * !R + !Q2_cur * !Q1_cur * !Q0_cur * R + Q2_cur * Q1_cur * !Q0_cur * F
 
 Circuit diagram modeled here: https://www.multisim.com/content/Kr2qwFthUyTpyucijUgyRN/tacho-system/open/
