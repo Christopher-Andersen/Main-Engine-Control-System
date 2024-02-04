@@ -85,6 +85,7 @@ The system will initialize with the flywheel in state 000 (S0) or between 0-44 d
 
 During engine startup, the RPM input for the clock will run off a script with a set RPM increase for consistancy. After engine startup the clock will be influenced by the actual RPM of the propulsion shaft in real time.
 
+----------------------------------------------------------------------------------------------------------------
 
 
 Karnaugh maps derived from the truth table in sum of products form:
