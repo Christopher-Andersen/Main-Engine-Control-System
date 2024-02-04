@@ -23,7 +23,7 @@ MSB    0     0     0       1       1       1       1       0
 ```
 For my replication of this system, I take advantage of the 8 divisions of the flywheel to create a finite state machine with eight states (3 bits). For this construction I use JK flip flops in my state memory portion instead of D flip flops due to the simplification of the output logic. I also believe that if there were to be more states required for an engine with more cylinders, JK flip flops would be necessary due to the reduction in circuit complexity.
 
-Side note: I believe it is possible to make this system modular for engines with a variable amount of cylinders. How this could be done is by writing a combined boolean function that will calculate all future logic statements as more cylinders are added. The reason I believe this is possible is because there is a relationship between the cylinder count and the amount of states needed on the flywheel to accomadate these cylinders. If the amount of cylinders increases, so must the resolution of the sensor on the flywheel, which requires more states. I believe this relationship is exponential but the issue holding me back is I have no idea how to write a cumulative boolean statement for this eight state system and form a function out of it.
+Side note: I believe it is possible to make this system modular for engines with a variable amount of cylinders. How this could be done is by writing a combined boolean function that will calculate all future logic statements as more cylinders are added. The reason I believe this is possible is because there is a relationship between the cylinder count and the amount of states needed on the flywheel to accommodate these cylinders. If the amount of cylinders increases, so must the resolution of the sensor on the flywheel, which requires more states. I believe this relationship is exponential but the issue holding me back is I have no idea how to write a cumulative boolean statement for this eight state system and form a function out of it.
 
 When designing this system, there are two schools of thought: either build a sensor that would directly connect the flywheel to the hydraulic operating valves as MAN B&W had done, or electronically emulate the flywheel and with a digital replica that simulates the existence of a flywheel (the flywheel is still required to exist physically for momentum purposes) and the camshaft at the same time. For this demonstration, I selected option two.
 
@@ -79,11 +79,12 @@ State diagram:
 
 Assumtions: 
 
-There will not be a foward and reverse input given in the same moment because the engine order telegraph (EOT) can only give one input at a time.
+There will not be a forward and reverse input given in the same moment because the engine order telegraph (EOT) can only give one input at a time.
 
-The system will initialize with the flywheel in state 000 (S0) or between 0-44 degrees for startup purposes only. After the system has been initalized, the digital flywheel will always record and remember its position.
+The system will initialize with the flywheel in state 000 (S0) or between 0-44 degrees for startup purposes only. After the system has been initialized, the digital flywheel will always record and remember its position.
 
-During engine startup, the RPM input for the clock will run off a script with a set RPM increase for consistancy. After engine startup the clock will be influenced by the actual RPM of the propulsion shaft in real time.
+During engine startup, the RPM input for the clock will run off a script with a set RPM increase for consistency. After engine startup the clock will be influenced by the actual RPM of the propulsion shaft in real time.
+
 
 ----------------------------------------------------------------------------------------------------------------
 
