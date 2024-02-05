@@ -95,7 +95,7 @@ Vertical axis in order of bits: F, R
 
 Horizontal axis in order of bits: Q2_cur, Q1_cur, Q0_cur
 
-J2:
+J2: 
 ```
   \   000   001   011   010   110   111   101   100
    \ _______________________________________________
